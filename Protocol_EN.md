@@ -40,7 +40,20 @@
 | R_ER | 212 | Connection error : Unknown username |
 | R_ER | 212 | Connection error : Incorrect password |
 
+## 2. Game management
+
+### 2.1.1 Game creation [Client Requests]
+- `START PUBLIC` : creation of a new public game (room)
+- `START PRIVATE identity_player2` : creation of a new private game (room)
+
+### 2.1.2 Game creation [Server Responses]
+
+| HEADER | CODE | MESSAGE |
+| ------ | ------ | ------ |
+| R_OK | 120 | Game created |
+|  |  |  |
+| R_ER | 220 | Game creation error : COMMON/UNKNOWN |
+| R_ER | 220 | Game creation error : Already in a game |
 
 
 
-- `JOIN room_id/server_port/...` : connection request (to a specified room/server)
