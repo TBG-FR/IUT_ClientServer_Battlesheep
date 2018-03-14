@@ -1,8 +1,12 @@
 
 # 'BatailleNavale' - Protocol [EN]
 
+_________________________________________________
 ## 1. Connection & Authentification
 
+Messages related to User's profiles and login : Registration, Connection, Authentification 
+
+_________________________________________________
 ### 1.1.1 Registration [Client Requests]
 - `REG1 username password` : registering request
 - `REG2 username password` : registering second-step (password verification)
@@ -22,12 +26,13 @@
 ### 1.1.3 Registration [Server Requests]
 *Nothing*
 
-### 1.2.1 Connection/Auth [Client Requests]
+_________________________________________________
+### 1.2.1 Connection & Authentification [Client Requests]
 - `CONN` : connection request  
 - `USER login` : client given login
 - `PASS password` : client given password
 
-### 1.2.2 Connection/Auth [Server Responses]
+### 1.2.2 Connection & Authentification [Server Responses]
 
 | HEADER | CODE | MESSAGE |
 | ------ | ------ | ------ |
@@ -41,11 +46,15 @@
 | R_ER | 212 | Connection error : Unknown username |
 | R_ER | 213 | Connection error : Incorrect password |
 
-### 1.2.3 Connection/Auth [Server Requests]
+### 1.2.3 Connection & Authentification [Server Requests]
 *Nothing*
 
+_________________________________________________
 ## 2. Game management - Begin
 
+Messages related to the Creation of a Game : Creation, Grid size definition, Game initialization
+
+_________________________________________________
 ### 2.1.1 Game creation [Client Requests]
 - `GNEW public` : creation of a new public game (room)
 - `GNEW private identity_player2` : creation of a new private game (room)
@@ -62,6 +71,7 @@
 ### 2.1.3 Game creation [Server Requests]
 *Nothing*
 
+_________________________________________________
 ### 2.2.1 Grid size defition [Client Requests]
 - `SIZE dim1 dim2` : define the size of the game grid
 
@@ -78,6 +88,7 @@
 ### 2.2.3 Grid size definition [Server Requests]
 *Nothing*
 
+_________________________________________________
 ### 2.3.1 Game initialization [Client Requests]
 - `GRID grid_filled` : send player's game grid filled with boats
 
@@ -96,8 +107,12 @@
 ### 2.3.3 Game initialization [Server Requests]
 *Nothing*
 
+_________________________________________________
 ## 3. Gameplay
 
+Messages related to the Game itself : Playing a turn, Ending a game, Playing again 
+
+_________________________________________________
 ### 3.1.1 Play Turn [Client Requests]
 - `PLAY dim1 dim2` : shoot on the given cell
 
@@ -118,6 +133,7 @@
 - `CASE dim1 dim2` : informs the player that the given cell has been shot
 - `TURN` : informs the player that it's now his turn
 
+_________________________________________________
 ### 3.2.1 End of Game [Client Requests]
 *Nothing*
 
@@ -129,28 +145,22 @@
 - `GWIN` : informs the player that he won
 - `GLOS` : informs the player that he lose
 
+_________________________________________________
 ### 3.3.1 Play Again [Client Requests]
 *TODO : RESTART, RESET, REPLAY ?*
 
 ### 3.3.2 Play Again [Server Responses]
-
-| HEADER | CODE | MESSAGE |
-| ------ | ------ | ------ |
-| R_OK | 170 | *TODO* |
-| R_OK | 171 | *TODO* |
-| R_OK | 172 | *TODO* |
-| R_OK | 173 | *TODO* |
-|  |  |  |
-| R_ER | 270 | *TODO* error : COMMON/UNKNOWN |
-| R_ER | 271 | *TODO* error : *TODO* |
-| R_ER | 272 | *TODO* : *TODO* |
+*TODO : CODES 17X & 27X *
 
 ### 3.2.3 Play Again [Server Requests]
 *TODO*
-_________________________________________________
 
+_________________________________________________
 ## 4. Quit & Disconnect
 
+Messages related to leaving the Game or Server : Quitting, Disconnecting
+
+_________________________________________________
 ### 4.1.1 Quitting Game [Client Requests]
 - `QUIT` : request to quit the game
 - `QIT2` : second step for quitting a game while playing
@@ -168,6 +178,7 @@ _________________________________________________
 ### 4.1.3 Quitting Game [Server Requests]
 - `GQIT` : informs the player that the other player left the game
 
+_________________________________________________
 ### 4.2.1 Disconnection [Client Requests]
 - `EXIT` : request to disconnect properly from the server
 
