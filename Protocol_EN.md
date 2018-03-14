@@ -192,4 +192,4 @@ _________________________________________________
 | R_ER | 291 | Disconnection error : Currently playing, use QUIT |
 
 ### 4.2.2 Disconnection [Server Requests]
-- `CHECK` : send a request to check if a player is here or not
+*TODO : CHECK : send a request to check if a player is here or not*
