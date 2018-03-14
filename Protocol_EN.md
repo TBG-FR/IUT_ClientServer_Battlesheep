@@ -17,7 +17,10 @@
 | R_ER | 200 | Registration error : COMMON/UNKNOWN |
 | R_ER | 201 | Registration not allowed |
 | R_ER | 202 | Registration error : Username already taken |
-| R_ER | 203 | Registration error : Incorrect Password (too weak ?) |
+| R_ER | 203 | Registration error : Incorrect Password (too weak ?)  |
+
+### 1.1.3 Registration [Server Requests]
+*Nothing*
 
 ### 1.2.1 Connection/Auth [Client Requests]
 - `CONN` : connection request  
@@ -38,6 +41,9 @@
 | R_ER | 212 | Connection error : Unknown username |
 | R_ER | 213 | Connection error : Incorrect password |
 
+### 1.2.3 Connection/Auth [Server Requests]
+*Nothing*
+
 ## 2. Game management - Begin
 
 ### 2.1.1 Game creation [Client Requests]
@@ -53,6 +59,9 @@
 | R_ER | 220 | Game creation error : COMMON/UNKNOWN |
 | R_ER | 221 | Game creation error : Already in a game |
 
+### 2.1.3 Game creation [Server Requests]
+*Nothing*
+
 ### 2.2.1 Grid size defition [Client Requests]
 - `SIZE dim1 dim2` : define the size of the game grid
 
@@ -65,6 +74,9 @@
 | R_ER | 230 | Size definition error : COMMON/UNKNOWN |
 | R_ER | 231 | Size definition error : Size too small |
 | R_ER | 232 | Size definition error : Integers required |
+
+### 2.2.3 Grid size definition [Server Requests]
+*Nothing*
 
 ### 2.3.1 Game initialization [Client Requests]
 - `GRID grid_filled` : send player's game grid filled with boats
@@ -80,6 +92,9 @@
 | R_ER | 241 | Game initialization error : Still waiting for a second player |
 | R_ER | 242 | Game initialization error : Invalid number of boats |
 | R_ER | 242 | Game initialization error : Invalid placement of boats |
+
+### 2.3.3 Game initialization [Server Requests]
+*Nothing*
 
 ## 3. Gameplay
 
@@ -164,3 +179,6 @@ _________________________________________________
 |  |  |  |
 | R_ER | 290 | Disconnection error : COMMON/UNKNOWN |
 | R_ER | 291 | Disconnection error : Currently playing, use QUIT |
+
+### 4.2.2 Disconnection [Server Requests]
+- `CHECK` : send a request to check if a player is here or not
