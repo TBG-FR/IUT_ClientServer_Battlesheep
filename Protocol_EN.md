@@ -21,7 +21,8 @@ _________________________________________________
 | R_ER | 200 | Registration error : COMMON/UNKNOWN |
 | R_ER | 201 | Registration not allowed |
 | R_ER | 202 | Registration error : Username already taken |
-| R_ER | 203 | Registration error : Incorrect Password (too weak ?)  |
+| R_ER | 203 | Registration error : Invalid Password (too weak ?)  |
+| R_ER | 204 | Registration error : Incorrect Password (type again) |
 
 ### 1.1.3 Registration [Server Requests]
 *Nothing*
@@ -43,8 +44,9 @@ _________________________________________________
 |  |  |  |
 | R_ER | 210 | Connection error : COMMON/UNKNOWN |
 | R_ER | 211 | Connection not allowed |
-| R_ER | 212 | Connection error : Unknown username |
-| R_ER | 213 | Connection error : Incorrect password |
+| R_ER | 212 | Connection error : Unknown host |
+| R_ER | 213 | Connection error : Unknown username |
+| R_ER | 214 | Connection error : Incorrect password |
 
 ### 1.2.3 Connection & Authentification [Server Requests]
 *Nothing*
@@ -102,7 +104,7 @@ _________________________________________________
 | R_ER | 240 | Game initialization error : COMMON/UNKNOWN |
 | R_ER | 241 | Game initialization error : Still waiting for a second player |
 | R_ER | 242 | Game initialization error : Invalid number of boats |
-| R_ER | 242 | Game initialization error : Invalid placement of boats |
+| R_ER | 243 | Game initialization error : Invalid placement of boats |
 
 ### 2.3.3 Game initialization [Server Requests]
 *Nothing*
@@ -123,14 +125,14 @@ _________________________________________________
 | R_OK | 150 | Turn played with success |
 | R_OK | 151 | Shot fired on an empty cell |
 | R_OK | 152 | Shot fired on an boat cell |
-| R_OK | 153 | Shot fired on an already-shot boat cell |
+| R_OK | 153 | Shot fired on an already-shot cell |
 |  |  |  |
 | R_ER | 250 | Turn play error : COMMON/UNKNOWN |
 | R_ER | 251 | Turn play error : Not your turn |
 | R_ER | 252 | Turn play error : Out of grid |
 
 ### 3.1.3 Play Turn [Server Requests]
-- `CASE dim1 dim2` : informs the player that the given cell has been shot
+- `INFO dim1 dim2` : informs the player that the given cell has been shot
 - `TURN` : informs the player that it's now his turn
 
 _________________________________________________
@@ -141,7 +143,7 @@ _________________________________________________
 *Nothing* *16X & 26X*
 
 ### 3.2.3 End of Game [Server Requests]
-- `GEND nb_turns` : informs the player that the game ended (with the number of turns)
+- `GEND nb_turns_played` : informs the player that the game ended (with the number of turns played)
 - `GWIN` : informs the player that he won
 - `GLOS` : informs the player that he lose
 
