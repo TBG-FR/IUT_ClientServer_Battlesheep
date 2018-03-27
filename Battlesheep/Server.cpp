@@ -3,7 +3,7 @@
 
 
 Server::Server() {
-
+    
     int sockfd, new_fd;  // sock_fd : point de connexion, new_fd : socket de transit
     struct sockaddr_in my_addr;    // adresse de transport de la socket coté serveur
     struct sockaddr_in their_addr; // adresse de transport de la socket coté client
@@ -57,11 +57,23 @@ Server::Server() {
 
 }
 
-
 Server::~Server() { }
 
 
 void client_management(int socket) {
+
+    //char buffer[BUFFERSIZE];
+    string buffer[BUFFERSIZE];    
+
+    while(1) {
+
+        //buffer.clear();
+        if(recv(socket, &buffer, buffer.length()) == -1) { perror("[ERR] Réception")}
+        else { parser(buffer); }
+
+    }
+
+
 
     /* code */
 
