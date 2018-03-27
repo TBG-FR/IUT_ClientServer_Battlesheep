@@ -13,6 +13,7 @@
 #include <sys/select.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 using namespace std;
 
@@ -43,8 +44,6 @@ void client_management(int socket) {
             perror("[ERR] Fermeture de la socket (close) : ");
 
             */
-
-    }
 
 }
 
@@ -111,6 +110,7 @@ int main() {
     }
 
     return EXIT_SUCCESS;
+
 }
 
 

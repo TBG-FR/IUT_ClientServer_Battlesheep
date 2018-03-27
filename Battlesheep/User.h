@@ -1,7 +1,6 @@
 #ifndef BATTLESHIP_USER
 
-#include <string>
-#include <iostream>
+#include <iostream.h>
 
 using namespace std;
 
