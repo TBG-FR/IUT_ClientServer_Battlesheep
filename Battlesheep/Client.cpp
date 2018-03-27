@@ -1,12 +1,12 @@
-#include "BattleshipClient.h"
+#include "Client.h"
 
 
 
-BattleshipClient::BattleshipClient()
+Client::Client()
 {
 }
 
 
-BattleshipClient::~BattleshipClient()
+Client::~Client()
 {
 }

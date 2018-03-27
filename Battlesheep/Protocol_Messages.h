@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BATTLESHIP_MESSAGES
+
 /* ===== ===== ===== */
 /* ===== ===== ===== */
 #define USER_REGISTRATION_SUCCESS_ALLOWED				= 100;
@@ -36,3 +37,37 @@
 #define SIZE_DEFINITION_ERROR_INTEGERS_REQUIRED         = 232;
 /* ===== ===== ===== */
 /* ===== ===== ===== */
+#define GAME_INITIALIZATION_SUCCESS_SECOND_PLAYER		= 140;
+#define GAME_INITIALIZATION_SUCCESS_CORRECT_GRIDS		= 141;
+/* ----- ----- ----- */
+#define GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN		= 240;
+#define GAME_INITIALIZATION_ERROR_WATITING_PLAYER		= 241;
+#define GAME_INITIALIZATION_ERROR_INVALID_NUMBER        = 242;
+#define GAME_INITIALIZATION_ERROR_INVALID_PLACEMENT     = 243;
+/* ===== ===== ===== */
+/* ===== ===== ===== */
+#define GAME_PLAY_SUCCESS_TURN_PLAYED                   = 150;
+#define GAME_PLAY_SUCCESS_SHOT_EMPTYCELL                = 151;
+#define GAME_PLAY_SUCCESS_SHOT_BOATCELL                 = 152;
+#define GAME_PLAY_SUCCESS_SHOT_ALREADYCELL              = 153;
+/* ----- ----- ----- */
+#define GAME_PLAY_ERROR_COMMON_UNKNOWN                  = 250;
+#define GAME_PLAY_ERROR_ENEMY_TURN                      = 251;
+#define GAME_PLAY_ERROR_OUTOF_BOUNDS                    = 252;
+/* ===== ===== ===== */
+/* ===== ===== ===== */
+#define GAME_QUIT_SUCCESS_LEAVING_ROOM                  = 180;
+#define GAME_QUIT_SUCCESS_ENDING_GAME                   = 181;
+/* ----- ----- ----- */
+#define GAME_QUIT_ERROR_COMMON_UNKNOWN                  = 280;
+#define GAME_QUIT_ERROR_CURRENTLY_PLAYING               = 281;
+/* ===== ===== ===== */
+/* ===== ===== ===== */
+#define SERVER_DISCON_SUCCESS_DISCON_OK                 = 190;
+/* ----- ----- ----- */
+#define SERVER_DISCON_ERROR_COMMON_UNKNOWN              = 290;
+#define SERVER_DISCON_ERROR_CURRENTLY_PLAYING           = 291;
+/* ===== ===== ===== */
+/* ===== ===== ===== */
+
+#endif

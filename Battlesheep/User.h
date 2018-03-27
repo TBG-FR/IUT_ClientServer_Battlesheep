@@ -1,4 +1,3 @@
-
 #ifndef BATTLESHIP_USER
 
 #include <string>

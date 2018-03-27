@@ -1,4 +1,3 @@
-
 #ifndef BATTLESHIP_SERVER
 
 #include "UserStorage.h"
