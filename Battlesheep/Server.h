@@ -16,33 +16,36 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
+#include <vector>
 
 using namespace std;
 
-#define MYPORT 3490    // Port du point de connexion
-#define BACKLOG 10     // Combien de connexion en attente autorise-t-on ?
+#define MYPORT 3490		// Port du point de connexion
+#define BACKLOG 10		// Combien de connexion en attente autorise-t-on ?
 #define MAXDATASIZE 100 // Nombre maximal d'octer a envoyer en une fois
 
-#define NB_THREADS 2 // Nombre de Threads dans notre Pool
+#define NB_THREADS 2   // Nombre de Threads dans notre Pool
 #define BUFFERSIZE 200 // Taille du Buffer
 
-class Server {
+#define MAX_ARGS 3 // Maximum d'arguments (nos plus grandes requête en ont trois (ex: PLAY dim1 dim2))
 
-private:
-	UserStorage userDatabase;
+/*class Server {
 
-public:
-	Server();
-	~Server();
-
+	// Server related methods (all static)
+  public:*/
 	void pool_management(int socket);
 	void client_management(int socket);
 
 	bool parser(int argc, char *argv[]);
-	
+	//bool parser(vector<string> args);
+
 	bool registration(string username, string password, bool second_step);
 	bool authentification(string username, string password);
 
-};
+	// Disallow creating an instance of this object
+  /*private:
+	Server();
+	~Server();
+};*/
 
 #endif
