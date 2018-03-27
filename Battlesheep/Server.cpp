@@ -53,14 +53,14 @@ Server::Server() {
 
     }
 
-    return EXIT_SUCCESS;
+    //return EXIT_SUCCESS;
 
 }
 
 Server::~Server() { }
 
 
-void client_management(int socket) {
+    void Server::client_management(int socket) {
 
     //char buffer[BUFFERSIZE];
     string buffer[BUFFERSIZE];    
@@ -68,13 +68,11 @@ void client_management(int socket) {
     while(1) {
 
         //buffer.clear();
-        if(recv(socket, &buffer, buffer.length()) == -1) { perror("[ERR] Réception")}
-        else { parser(buffer); }
+        if(recv(socket, &buffer, BUFFERSIZE, 0) == -1) { perror("[ERR] Réception"); }
+        else { cout << "PARSE" << endl; /*bool parse = parser();*/ }
 
     }
-
-
-
+    
     /* code */
 
     /*
@@ -89,14 +87,12 @@ void client_management(int socket) {
 
             */
 
-    }
-
 }
 
-void pool_management(int socket) {
+void Server::pool_management(int socket) {
 
-    std::thread Client(client_management, socket);
-    Client.detach();
+    thread tClient(client_management, socket);
+    tClient.detach();
     sleep(1);
 
 }

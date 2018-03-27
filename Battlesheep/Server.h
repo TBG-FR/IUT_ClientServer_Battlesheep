@@ -15,6 +15,7 @@
 #include <sys/select.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <thread>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ using namespace std;
 #define MAXDATASIZE 100 // Nombre maximal d'octer a envoyer en une fois
 
 #define NB_THREADS 2 // Nombre de Threads dans notre Pool
+#define BUFFERSIZE 200 // Taille du Buffer
 
 class Server {
 
