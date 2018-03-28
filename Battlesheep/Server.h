@@ -2,6 +2,9 @@
 
 #include "UserStorage.h"
 #include "Requests.h"
+#include "Protocol_Messages.h"
+#include "Status.h"
+#include "Tools.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +19,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -34,9 +38,14 @@ using namespace std;
 	// Server related methods (all static)
   public:*/
 	void pool_management(int socket);
-	void client_management(int socket);
+	//void client_management(int socket);
+	void server_behavior(int socket);
+	//char* server_reception(int socket, int args_it);
+	bool server_reception(int socket, int args_it, char* args);
+	//vector<string> server_reception(int socket);
 
-	bool parser(int argc, char *argv[]);
+	void server_return(int message);
+	//bool parser(int argc, char *argv[]);
 	//bool parser(vector<string> args);
 
 	bool registration(string username, string password, bool second_step);

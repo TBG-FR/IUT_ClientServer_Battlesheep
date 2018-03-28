@@ -1,12 +1,21 @@
 #include "Client.h"
 
+void client_main(/*int socket*/) {
 
+    
 
-Client::Client()
-{
 }
 
+bool parser(int argc, char *argv[]) {
 
-Client::~Client()
-{
+
+
 }
+
+//bool parser(vector<string> args);
+
+/*
+// Should never be used
+Client::Client() {}
+Client::~Client() {}
+*/

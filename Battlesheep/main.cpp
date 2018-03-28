@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     cout << "Lancement..." << endl;
 
+    // Lancement du serveur
     if ((string) argv[1] == "server")
     {
 
@@ -64,8 +65,16 @@ int main(int argc, char *argv[])
         return EXIT_SUCCESS;
     }
 
-    else if (argv[1] == "client") { /*Client client = Client();*/ }
+    // Lancement du client
+    else if (argv[1] == "client") { 
+        
+        // Connexion : Voir TPs/Ressources CS
 
+        client_main();
+
+     }
+
+    // Arrêt du programme
     else {
 
         cout << "Vous devez entrer \"client\" ou \"server\" comme premier argument !" << endl;
