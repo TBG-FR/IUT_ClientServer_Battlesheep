@@ -4,10 +4,12 @@
 #define BACKLOG 10		// Combien de connexion en attente autorise-t-on ?
 #define MAXDATASIZE 100 // Nombre maximal d'octer a envoyer en une fois
 
-#define NB_THREADS 2   // Nombre de Threads dans notre Pool
+#define NB_THREADS 2   // Nombre de Threads dans notre Pool => NB_PLAYERS
 #define BUFFERSIZE 200 // Taille du Buffer
 
 int player_threads = 0;
+Status game_status;
+int sockets_p[NB_THREADS];
 
 void /*Server::*/pool_management(int socket) {
 
@@ -25,9 +27,9 @@ void /*Server::*/pool_management(int socket) {
 
     }
 
-    if(player_threads == 1) {
+    else if(player_threads == 1) {
 
-        thread Client(server_behavior,socket,player_threads+1);
+        thread Client(add_player,socket,player_threads+1);
         player_threads++;
         Client.detach();
         sleep(1);
@@ -42,25 +44,36 @@ void /*Server::*/pool_management(int socket) {
 
 }
 
+void add_player(int socket, int player) {
+    
+    sockets_p[1] = socket;
+    game_status = TWO_PLAYERS;
+
+}
+
 void server_behavior(int socket, int player) {
+
+    /*TEMP*/ cout << "-- CONN PLAYER #0" << player << endl;
 
     // Variables propres au jeu
     int dim1 = 0, dim2 = 0;
     int count_total, count_boats;
     int count_p1_touched, count_p2_touched;
-    Status game_status;
     
     // Détermination du comportement à adopter
         // p1 -> souhaite créer une nouvelle partie
         // p2 -> souhaite rejoindre une partie existante
+    /*
     switch(player) {
 
         case 1: // New game -> Let's create !
+            socket_p1 = socket;
             //Status game_status = NONE;
             game_status = ONE_PLAYER; //TEMP
             break;
 
         case 2: // Existing game -> Let's join !
+            socket_p2 = socket;
             game_status = TWO_PLAYERS;
             break;
 
@@ -68,7 +81,10 @@ void server_behavior(int socket, int player) {
             game_status = NONE;
             break;
 
-    }
+    }*/    
+    sockets_p[0] = socket;
+    //Status game_status = NONE;
+    game_status = ONE_PLAYER; //TEMP
 
     // Variables utiles pour la gestion des arguments
     vector<string> args;
@@ -140,9 +156,6 @@ void server_behavior(int socket, int player) {
                         // Grid size definition
                         server_return(SIZE_DEFINITION_SUCCESS_SIZE_DEFINED);
                         game_status = GAME_CONFIGURED;
-                        /* TEMP */ cout << "Simulation P2" << endl;
-                        game_status == TWO_PLAYERS;
-                        server_return(GAME_INITIALIZATION_SUCCESS_SECOND_PLAYER);
 
                     }
 
@@ -165,7 +178,11 @@ void server_behavior(int socket, int player) {
 
         // 2.3 Game Creation : Initialization
 
-        // TODO : Connexion du deuxième joueur
+        while(game_status == GAME_CONFIGURED) {
+
+            // Do nothing, wait for second player
+
+        } server_return(GAME_INITIALIZATION_SUCCESS_SECOND_PLAYER);
 
         while(game_status == TWO_PLAYERS) {
 
@@ -176,45 +193,50 @@ void server_behavior(int socket, int player) {
             min_args = 2;
             max_args = 2;
 
-            // Mise en attente du client puis Traitement de la réponse
-            if(server_reception(socket, args, min_args, max_args) == true && args.at(0) == "GRID")
-            {
+            // Mise en attente des clients puis Traitement des réponses
+            for(int i = 0; i < NB_THREADS; i++) {
 
-                //TODO : ARGS into GRID with function stog
-                //                          = stog(args.at(2));
-                int grid_filled[dim1][dim2] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+                if(server_reception(sockets_p[i], args, min_args, max_args) == true && args.at(0) == "GRID")
+                {
 
-                int gridcheck_answer = grid_check(*grid_filled, dim1, dim2);
+                    //TODO : ARGS into GRID with function stog
+                    //                          = stog(args.at(2));
+                    //int grid_filled[dim1][dim2] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+                    int* grid_filled =  stog(args.at(2));
 
-                switch(gridcheck_answer) {
+                    int gridcheck_answer = grid_check(grid_filled, dim1, dim2);
 
-                    case 0: // Correct Grid
-                        server_return(GAME_INITIALIZATION_SUCCESS_CORRECT_GRIDS);
-                        game_status == INGAME;
-                        break;
+                    switch(gridcheck_answer) {
 
-                    case -1: // Invalid number of boats
-                        server_return(GAME_INITIALIZATION_ERROR_INVALID_NUMBER);
-                        break;
+                        case 0: // Correct Grid
+                            server_return(GAME_INITIALIZATION_SUCCESS_CORRECT_GRID);
+                            game_status == INGAME;
+                            break;
 
-                    case -2: // Invalid boat placement
-                        server_return(GAME_INITIALIZATION_ERROR_INVALID_PLACEMENT);
-                        break;
+                        case -1: // Invalid number of boats
+                            server_return(GAME_INITIALIZATION_ERROR_INVALID_NUMBER);
+                            break;
 
-                    default: // Other answer
-                        server_return(GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN);
-                        break;
+                        case -2: // Invalid boat placement
+                            server_return(GAME_INITIALIZATION_ERROR_INVALID_PLACEMENT);
+                            break;
+
+                        default: // Other answer
+                            server_return(GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN);
+                            break;
+
+                    }
+
+                    // code here ?
 
                 }
 
-                // code here ?
+                else {
 
-            }
+                    // Unknown instruction -> Error : Common or other ?
+                    //server_return(_);
 
-            else {
-
-                // Unknown instruction -> Error : Common or other ?
-                //server_return(_);
+                }
 
             }
 

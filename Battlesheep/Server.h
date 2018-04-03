@@ -30,6 +30,7 @@ using namespace std;
   public:*/
 	void pool_management(int socket);
 	//void client_management(int socket);
+	void add_player(int socket, int player);
 	void server_behavior(int socket, int player);
 	//char* server_reception(int socket, int args_it);
 	//bool server_reception(int socket, int args_it, char* args);

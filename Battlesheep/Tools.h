@@ -34,9 +34,90 @@ int stoi_noex(string s) {
 //          1 0 0 0 0 0 1
 //          1 0 0 0 0 0 1
 //          0 0 0 0 0 0 1
-int stog(string s) {
+int* stog(string s) {
 
-    // TODO;
+    //int grid_filled[dim1][dim2] =  stog(args.at(2));
+    /*TEMP*/ s = "L.0.0.1.1.0.0.0.L.1.0.0.0.0.0.1.L.1.0.0.0.0.0.1.L.0.0.0.0.0.0.1";
+
+    int dim1 = 0, dim2 = 0, dim2t = 0;
+    std::string::iterator it=s.begin();
+
+    while(*it != NULL && *it != '\0' && it != s.end()) {
+
+        // Lines
+        if(*it == 'L') {
+
+            dim1++;
+            it++;
+
+            // Columns
+            while(*it != NULL && *it == '.') {
+
+                if(*it+1 != NULL && *it+1 != 'L') {
+
+                    dim2t++;
+                    it+2;
+
+                }
+                else {  it+1; }
+
+            }
+
+            // Find the max
+            if(dim2t > dim2) { dim2 = dim2t; }
+
+        }
+
+    }
+    
+
+    int grid[dim1][dim2];
+    std::string::iterator itb=s.begin();
+
+    while(*it != NULL && *itb != '\0' && itb != s.end()) {
+
+        int i = -1; // Reset "dim1"
+
+        // Lines
+        if(*itb == 'L') {
+
+            i++;    // Add to "dim1" (-> lig+1)
+            int j = -1; // Reset "dim2"
+            itb++;
+
+            // Columns
+            while(*it != NULL && *it == '.') {
+
+                if(*it+1 != NULL && *itb+1 != 'L') {
+
+                    j++;    // Add to "dim2" (-> col+1)
+                    grid[i][j] = (*itb+1) - '0';
+                    itb+2;
+
+                }
+                else {  itb+1; }
+
+            }
+
+        }
+
+    }
+
+    /*TEMP*/
+    
+    for(int i = 0; i<dim1; i++) {
+        for(int j = 0; j<dim2; j++) {
+            cout << grid[i][j];
+        }
+        cout << endl;
+    }
+    
+    /*TEMP*/
+
+    /*TEMP*/ cout << "REACHED" << endl;
+
+    //int grid[3][3] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+    return *grid;
 
 }
 
