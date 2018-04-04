@@ -37,7 +37,9 @@ int stoi_noex(string s) {
 int* stog(string s) {
 
     //int grid_filled[dim1][dim2] =  stog(args.at(2));
-    /*TEMP*/ s = "L.0.0.1.1.0.0.0.L.1.0.0.0.0.0.1.L.1.0.0.0.0.0.1.L.0.0.0.0.0.0.1";
+    //TEMP// s = "L.0.0.1.1.0.0.0.L.1.0.0.0.0.0.1.L.1.0.0.0.0.0.1.L.0.0.0.0.0.0.1";
+
+    /*
 
     int dim1 = 0, dim2 = 0, dim2t = 0;
     std::string::iterator it=s.begin();
@@ -103,7 +105,7 @@ int* stog(string s) {
 
     }
 
-    /*TEMP*/
+    // TEMP : Display
     
     for(int i = 0; i<dim1; i++) {
         for(int j = 0; j<dim2; j++) {
@@ -112,11 +114,13 @@ int* stog(string s) {
         cout << endl;
     }
     
-    /*TEMP*/
+    cout << "REACHED" << endl;
 
-    /*TEMP*/ cout << "REACHED" << endl;
+    */
 
-    //int grid[3][3] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+    cout << "STOG" << endl;
+
+    int grid[3][3] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
     return *grid;
 
 }

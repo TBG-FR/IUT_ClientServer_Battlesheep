@@ -54,7 +54,7 @@
 /* ----- ----- ----- */
 #define GAME_PLAY_ERROR_COMMON_UNKNOWN                  250
 #define GAME_PLAY_ERROR_ENEMY_TURN                      251
-#define GAME_PLAY_ERROR_OUTOF_BOUNDS                    252
+#define GAME_PLAY_ERROR_OUTSIDE_BOUNDS                  252
 /* ===== ===== ===== */
 /* ===== ===== ===== */
 #define GAME_QUIT_SUCCESS_LEAVING_ROOM                  180
