@@ -7,11 +7,12 @@ int main(int argc, char *argv[])
 {
 
     srand(time(NULL));
-    cout << "Lancement..." << endl;
+    cout << "===== ===== Bienvenue dans Battlesheep ===== ===== " << endl;
 
     // Lancement du serveur
-    if ((string) argv[1] == "server")
-    {
+    if ((string) argv[1] == "server") {
+        
+        cout << "===== ===== Lancement du Serveur... ===== ===== " << endl;
 
         int sockfd, new_fd;            // sock_fd : point de connexion, new_fd : socket de transit
         struct sockaddr_in my_addr;    // adresse de transport de la socket coté serveur
@@ -66,9 +67,9 @@ int main(int argc, char *argv[])
     }
 
     // Lancement du client
-    else if (argv[1] == "client") { 
-        
-        // Connexion : Voir TPs/Ressources CS
+    else if (argv[1] == "client") {
+
+        cout << "===== ===== Lancement du Client... ===== ===== " << endl;
 
         client_main();
 
