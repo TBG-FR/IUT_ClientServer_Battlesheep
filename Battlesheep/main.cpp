@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     }
 
     // Lancement du client
-    else if (argv[1] == "client") {
+    else if ((string) argv[1] == "client") {
 
         cout << "===== ===== Lancement du Client... ===== ===== " << endl;
 

@@ -8,9 +8,9 @@ using namespace std;
 
 	// Client related methods
   public:*/
-	void client_main(/*int socket*/);
+	int client_main(/*int socket*/);
 
-	//bool client_reception(int socket, vector<string> &args, int min_args, int max_args);
+	int client_reception(int socket, vector<string> &args);
 	bool parser(int argc, char *argv[]);
 	//bool parser(vector<string> args);
 

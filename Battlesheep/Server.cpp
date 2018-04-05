@@ -51,18 +51,18 @@ void pool_management(int socket) {
 }
 
 void add_player(int socket, int player) {
-
-    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl;    
+   
     // TODO : Améliorer si on veut plus de 2 joueurs
     // -> sockets_p[player] = socket;
     sockets_p[1] = socket;
     game_status = TWO_PLAYERS;
 
+    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl; 
+    server_return(TEMP_CONN_PLAYER_TWO);
+
 }
 
 void server_behavior(int socket, int player) {
-
-    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl;
     
     // Détermination du comportement à adopter
         // p1 -> souhaite créer une nouvelle partie
@@ -89,6 +89,9 @@ void server_behavior(int socket, int player) {
     sockets_p[0] = socket;
     //Status game_status = NONE;
     game_status = ONE_PLAYER; //TEMP
+
+    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl;
+    server_return(TEMP_CONN_PLAYER_ONE);
 
     // Variables utiles pour la gestion des arguments
     vector<string> args;
@@ -462,7 +465,7 @@ bool server_reception(int socket, vector<string> &args, int min_args, int max_ar
 
 }
 
-void server_return(int message) {
+void server_return(int msg_code) {
 
     // TODO : Send the response code (message) to the client
     // Needed : Header (R_OK or R_ER)
@@ -471,11 +474,15 @@ void server_return(int message) {
     // TODO : Add socket ? (p1 or p2)
     //          -> void server_return(int socket, int message);
     //
+    
+    string msg_str = std::to_string(msg_code);
+    char const *msg = msg_str.c_str();
 
     for(int i=0; i<NB_THREADS; i++) {
 
         cout << "P[" << i << "]";
-        cout << "[Server:Return] " << message << endl;
+        cout << "[Server:Return] " << msg_code << endl;
+        //send(sockets_p[i], msg, strlen(msg), 0);
 
     }
 

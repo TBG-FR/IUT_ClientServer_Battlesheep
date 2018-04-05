@@ -1,5 +1,9 @@
 #ifndef BATTLESHIP_MESSAGES
 
+ // Temporaire : évite de gérer l'arrivée des joueurs et la gestion des "rôles"
+ // (joueur qui souhaite créer une partie, joueur qui souhaite rejoindre)
+#define TEMP_CONN_PLAYER_ONE 888
+#define TEMP_CONN_PLAYER_TWO 999
 /* ===== ===== ===== */
 /* ===== ===== ===== */
 #define USER_REGISTRATION_SUCCESS_ALLOWED			    100
