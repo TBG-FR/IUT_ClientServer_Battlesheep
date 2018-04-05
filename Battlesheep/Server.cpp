@@ -15,7 +15,7 @@ int dim1 = 0, dim2 = 0;
 int*** grids_p = new int**[NB_THREADS];
 int** grid_filled;
 int count_total, count_boats;
-int count_stricken_p[NB_THREADS];
+int count_hits_p[NB_THREADS];
 
 void pool_management(int socket) {
 
@@ -51,7 +51,8 @@ void pool_management(int socket) {
 }
 
 void add_player(int socket, int player) {
-    
+
+    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl;    
     // TODO : Améliorer si on veut plus de 2 joueurs
     // -> sockets_p[player] = socket;
     sockets_p[1] = socket;
@@ -61,7 +62,7 @@ void add_player(int socket, int player) {
 
 void server_behavior(int socket, int player) {
 
-    /*TEMP*/ cout << "-- CONN PLAYER #0" << player << endl;
+    /*TEMP*/ cout << "-- CONN PLAYER #" << player << endl;
     
     // Détermination du comportement à adopter
         // p1 -> souhaite créer une nouvelle partie
@@ -126,12 +127,7 @@ void server_behavior(int socket, int player) {
 
             }
 
-            else {
-
-                // Unknown instruction -> Error : Common or other ?
-                //server_return(_);
-
-            }
+            else { server_return(GAME_CREATION_ERROR_COMMON_UNKNOWN); }
 
         }
 
@@ -156,8 +152,7 @@ void server_behavior(int socket, int player) {
 
                     if(dim1 >= 3 && dim2 >= 3) {
 
-                        cout << "GRID1" << endl;
-
+                        /* ----------MOVED INTO NEXT PART----------
                         // Players' Grid - Initialization
                         for(int x = 0; x < NB_THREADS; ++x) {
                             grids_p[x] = new int*[dim1];
@@ -167,14 +162,10 @@ void server_behavior(int socket, int player) {
                                     grids_p[x][y][z] = 0;
                                 }
                             }
-                        }
-
-                        cout << "GRID2" << endl;
+                        } */
 
                         // Temporary Grid - Initialization
                         grid_filled = new int*[dim1];
-
-                        cout << "GRID3" << endl;
 
                         for(int x = 0; x < dim1; ++x) {
                             grid_filled[x] = new int[dim2];
@@ -183,13 +174,9 @@ void server_behavior(int socket, int player) {
                             }
                         }
 
-                        cout << "GRID4" << endl;
-
                         count_total = dim1 * dim2;  // NxN, NxM
                         count_boats = 0.2 * dim1 * dim2; // 0.2 * N², 0.2 * N * M
-                        for(int i=0; i<NB_THREADS; i++) { count_stricken_p[NB_THREADS] = 0; }
-
-                        cout << "GRID5" << endl;
+                        for(int i=0; i<NB_THREADS; i++) { count_hits_p[NB_THREADS] = 0; }
 
                         server_return(SIZE_DEFINITION_SUCCESS_SIZE_DEFINED);
                         game_status = GAME_CONFIGURED;
@@ -225,84 +212,73 @@ void server_behavior(int socket, int player) {
             min_args = 2;
             max_args = 2;
 
-/*
             // Variables additionnelles
             bool* grid_ok_p = new bool[NB_THREADS];
+            for(int i=0; i<NB_THREADS; i++) { grid_ok_p[i] = false; }
 
-            switch(grid_ok_p[0]) {
+            // Pour chaque joueur, demande de la grille en boucle tant qu'elle n'est pas valide
+            for(int i=0; i<NB_THREADS; i++) {
 
+                while(grid_ok_p[i] == false) {
 
+                    args.clear();
 
-            }
+                    if(server_reception(sockets_p[i], args, min_args, max_args) == true && args.at(0) == "GRID") {
 
-            if(grid_ok_p1 == false) {  }
-            if(grid_ok_p2 == false) {  }
-            else {  }
-*/
+                        //TODO : ARGS into GRID with function stog
+                        //                          = stog(args.at(2));
+                        //int grid_filled[dim1][dim2] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+                        grid_filled = stog(args.at(1));
+                        
+                        int gridcheck_answer = grid_check(*grid_filled, dim1, dim2);
 
+                        switch(gridcheck_answer) {
 
-            // Mise en attente des clients puis Traitement des réponses
-            for(int i = 0; i < NB_THREADS; i++) {
+                            case 0: // Correct Grid
 
-                args.clear();
+                                // Players' Grid - Initialization
+                                grids_p[i] = new int*[dim1];
+                                for(int y = 0; y < dim1; ++y) {
+                                    grids_p[i][y] = new int[dim2];
+                                    for(int z = 0; z < dim2; ++z) { // initialize the values to whatever you want the default to be
+                                        grids_p[i][y][z] = grid_filled[y][z];
+                                    }
+                                }
+                                //*grids_p[i] = *grid_filled;
+                                grid_ok_p[i] = true;
+                                server_return(GAME_INITIALIZATION_SUCCESS_CORRECT_GRID);
+                                // TODO Destruction du tableau grid_filled
+                                break;
 
-                if(server_reception(sockets_p[i], args, min_args, max_args) == true && args.at(0) == "GRID")
-                {
+                            case -1: // Invalid number of boats
+                                server_return(GAME_INITIALIZATION_ERROR_INVALID_NUMBER);
+                                break;
 
-                    cout << "FILL0" << endl;
+                            case -2: // Invalid boat placement
+                                server_return(GAME_INITIALIZATION_ERROR_INVALID_PLACEMENT);
+                                break;
 
-                    //TODO : ARGS into GRID with function stog
-                    //                          = stog(args.at(2));
-                    //int grid_filled[dim1][dim2] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
-                    *grid_filled = stog(args.at(1));
+                            default: // Other answer
+                                server_return(GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN);
+                                break;
 
-                    cout << "FILL1" << endl;
-
-                    int gridcheck_answer = grid_check(*grid_filled, dim1, dim2);
-
-                    cout << "FILL2" << endl;
-
-                    switch(gridcheck_answer) {
-
-                        case 0: // Correct Grid
-                            cout << "FILL3" << endl;
-                            *grids_p[i] = *grid_filled;
-                            cout << "FILL4" << endl;
-                            server_return(GAME_INITIALIZATION_SUCCESS_CORRECT_GRID);
-                            game_status == INGAME;
-                            cout << "FILL5" << endl;
-                            break;
-
-                        case -1: // Invalid number of boats
-                            server_return(GAME_INITIALIZATION_ERROR_INVALID_NUMBER);
-                            break;
-
-                        case -2: // Invalid boat placement
-                            server_return(GAME_INITIALIZATION_ERROR_INVALID_PLACEMENT);
-                            break;
-
-                        default: // Other answer
-                            server_return(GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN);
-                            break;
+                        }
 
                     }
 
-                }
-
-                else {
-
-                    // Unknown instruction -> Error : Common or other ?
-                    //server_return(_);
+                    else { server_return(GAME_INITIALIZATION_ERROR_COMMON_UNKNOWN); }
 
                 }
 
             }
+
+            // Passage au jeu
+            server_return(GAME_INITIALIZATION_SUCCESS_CORRECT_GRIDS);
+            game_status = INGAME;
 
         }
 
         while(game_status == INGAME) {
-
-            cout << "TEST_DEBUG_1" << endl;
 
             // Remise à zéro des arguments, par précaution
             args.clear();
@@ -312,11 +288,14 @@ void server_behavior(int socket, int player) {
             max_args = 3;
 
             // Variables additionnelles
-            bool replay = true;
+            bool replay_p[NB_THREADS];
             int ennemy;
 
             // Mise en attente des clients puis Traitement des réponses
             for(int i = 0; i < NB_THREADS; i++) {
+                
+                // Nécessaire au lancement du tour
+                replay_p[i] = true;
 
                 // Définition de l'ennemi
                 //TODO : améliorer pour un jeu à plus de 2 joueurs
@@ -331,15 +310,20 @@ void server_behavior(int socket, int player) {
                         
                     default:
                         cout << "UNDEFINED ENNEMY";
+                        ennemy = -1;
                         break;
                 }
 
-                while(replay == true && ennemy != NULL && (ennemy == (1 || 2))) {
+                bool existing_enn = false; // Replaces 'while(replay == true && (ennemy == (0 || 1))) {'
+                for(int j=0; j<NB_THREADS; j++) { if(ennemy == j) { existing_enn = true; } }            
+                while(replay_p[i] == true && existing_enn == true) {
+
+                    cout << "[INFO][TURN] Player " << i << " versus Player " << ennemy << endl;
 
                     args.clear();
-                    replay = false;
+                    replay_p[i] = false;
 
-                    if(server_reception(sockets_p[0], args, min_args, max_args) == true && args.at(0) == "PLAY")
+                    if(server_reception(sockets_p[i], args, min_args, max_args) == true && args.at(0) == "PLAY")
                     {
                         int shotdim1 = stoi_noex(args.at(1));
                         int shotdim2 = stoi_noex(args.at(2));
@@ -347,35 +331,71 @@ void server_behavior(int socket, int player) {
                         // Si le tir est bien dans la grille
                         if( shotdim1 <= dim1 || shotdim2 <= dim2) {
 
-                            server_return(GAME_PLAY_SUCCESS_TURN_PLAYED);
-
+                            cout << "[INFO][TURN] P" << i << " shot P" << ennemy << " at [" << shotdim1 
+                            << "][" << shotdim2 << " [";
+                            
                             switch(grids_p[ennemy][shotdim1][shotdim2]) {
 
                                 case 1: // Touché
+                                    cout << "1 (Boat) ->  2 (Boat shot)]" << endl;
+
+                                    server_return(GAME_PLAY_SUCCESS_TURN_PLAYED);
                                     server_return(GAME_PLAY_SUCCESS_SHOT_BOATCELL);
                                     grids_p[ennemy][shotdim1][shotdim2] = 2;
-                                    count_stricken_p[ennemy]++;
+                                    count_hits_p[ennemy]++;
 
                                     // TODO : Check if "Coulé"
                                     
                                     // Si tous les bateaux ont été coulés
-                                    if(count_stricken_p[ennemy] == count_boats) {
+                                    //if(count_hits_p[ennemy] == count_boats) {
+                                    if(count_hits_p[ennemy] == 3) { //TEMP
                                         game_status = ENDGAME;
+                                        replay_p[i] = false;
                                     }
-
-                                    replay = true;
+                                    else { replay_p[i] = true; }
                                     break;
 
                                 case 2: // Déjà touché
+                                    cout << "2 (Boat already shot)]" << endl;
+                                    server_return(GAME_PLAY_SUCCESS_TURN_PLAYED);
                                     server_return(GAME_PLAY_SUCCESS_SHOT_ALREADYCELL);
                                     break;
                                 
                                 case 0: // Dans l'eau
-                                    // Passer au 'default'
-
-                                default:
+                                    cout << "0 (Water)]" << endl;
+                                    server_return(GAME_PLAY_SUCCESS_TURN_PLAYED);
                                     server_return(GAME_PLAY_SUCCESS_SHOT_EMPTYCELL);
                                     break;
+
+                                default: // Etat inconnu
+                                    cout << "? (Error ?)]" << endl;
+                                    server_return(GAME_PLAY_ERROR_COMMON_UNKNOWN);
+                                    replay_p[i] = true;
+                                    break;
+
+                            }
+
+                            // INFO : Affichage des grilles des joueurs
+                            cout << "[INFO][TURN] Displaying players' grids..." << endl;                            
+                            for(int x=0; x<NB_THREADS; x++) {
+
+                                cout << "----- ----- Player " << x << " - Grid Status ----- -----";
+
+                                for(int y=0; y<dim1; y++) {
+
+                                    cout << endl;
+
+                                    for(int z=0; z<dim2; z++) {
+
+                                        cout << " | " << grids_p[x][y][z];
+
+                                    }
+
+                                    cout << " | ";
+
+                                }
+
+                                cout << endl << endl;
 
                             }
 
@@ -385,28 +405,27 @@ void server_behavior(int socket, int player) {
 
                     }
 
-                    else { server_return(GAME_PLAY_ERROR_COMMON_UNKNOWN); }
+                    else { server_return(GAME_PLAY_ERROR_COMMON_UNKNOWN); replay_p[i] = false; }
 
                 }
-
-
-
-
 
             }
 
         }
 
-        while(game_status = ENDGAME) {
+        while(game_status == ENDGAME) {
 
-            cout << "ENDGAME"; // TEMP
             game_status = GAME_PAUSED; // TEMP
+            cout << "ENDGAME"; // TEMP
+
+            // TODO : Proposer de rejouer
 
         }
 
-        /* TEMP */ cout << "REACHED" << endl << endl;
-
         for(int i=0; i<NB_THREADS; i++) { close(sockets_p[i]); }
+        // TODO : Destruction des tableaux grids_p
+
+        /* TEMP */ cout << " 'EOF' REACHED" << endl << endl;
 
 }
 

@@ -34,7 +34,35 @@ int stoi_noex(string s) {
 //          1 0 0 0 0 0 1
 //          1 0 0 0 0 0 1
 //          0 0 0 0 0 0 1
-int* stog(string s) {
+int** stog(string s) { 
+
+    cout << "STOG" << endl;
+
+    //int grid[3][3] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
+    //return grid;
+
+    //int** create2DArray(unsigned height, unsigned width) {
+
+      int** array2D = 0;
+      array2D = new int*[3];
+
+      for (int h = 0; h < 3; h++)
+      {
+            array2D[h] = new int[3];
+
+            for (int w = 0; w < 3; w++)
+            {
+                  // fill in some initial values
+                  // (filling in zeros would be more logic, but this is just for the example)
+                  array2D[h][w] = 0;
+            }
+      }
+
+      array2D[0][1] = 1;
+      array2D[1][1] = 1;
+      array2D[2][1] = 1;
+      
+      return array2D;
 
     //int grid_filled[dim1][dim2] =  stog(args.at(2));
     //TEMP// s = "L.0.0.1.1.0.0.0.L.1.0.0.0.0.0.1.L.1.0.0.0.0.0.1.L.0.0.0.0.0.0.1";
@@ -117,11 +145,6 @@ int* stog(string s) {
     cout << "REACHED" << endl;
 
     */
-
-    cout << "STOG" << endl;
-
-    int grid[3][3] = { {0, 1, 0}, {0, 1, 0},  {0, 1, 0} };
-    return *grid;
 
 }
 
